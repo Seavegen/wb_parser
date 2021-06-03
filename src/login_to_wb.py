@@ -1,6 +1,7 @@
 """ Авторизация на wildberries. Каптчу и СМС код нужно брать из ТГ-бота
 """
 import os
+import pickle
 import urllib
 from urllib.request import urlretrieve
 
@@ -13,13 +14,15 @@ from config import login
 from loader import dp, bot
 from services import delay, user_agent
 from state import CaptchaAndPhoneState
+from parser import wb_parser
 
 
-ua = user_agent()
 option = webdriver.ChromeOptions()
 option.add_argument("--disable-blink-features=AutomationControlled")
 option.add_argument('--disable-notifications')
-option.add_argument(f'--user-agent={ua}')
+option.add_argument(f'--user-agent={user_agent()}')
+option.add_argument('--disable-extensions')
+option.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Chrome(os.getcwd() + "/chromedriver", options=option)
 
 
@@ -54,9 +57,16 @@ async def set_captcha(message: Message, state: FSMContext):
 @dp.message_handler(state=CaptchaAndPhoneState.phone)
 async def get_sms_code_phone(message: Message, state: FSMContext):
     sms_code_phone = message.text
-    driver.find_element(By.CLASS_NAME, 'j-input-confirm-code').send_keys(sms_code_phone)
+    driver.find_element(By.CLASS_NAME, 'j-input-confirm-code').send_keys(
+        sms_code_phone)
     delay()
-    driver.find_element(By.ID, 'requestCode').click()
-    delay()
+    try:
+        driver.find_element(By.ID, 'requestCode').click()
+        delay()
+    except Exception as e:
+        print(e)
+
     await message.answer('Вы успешно авторизовались!')
+    pickle.dump(driver.get_cookies(), open(f"{login}_cookies", "wb"))
     await state.finish()
+    wb_parser()

@@ -7,8 +7,10 @@ from aiogram.utils import executor
 from aiogram.types import Message
 
 from loader import dp, bot
-from src.login_to_wb import auth_to_wb
+from login_to_wb import auth_to_wb
 from state import CaptchaAndPhoneState
+from config import login
+from parser import wb_parser
 
 
 @dp.message_handler(commands='start')
@@ -28,18 +30,13 @@ async def start(message: Message):
     await CaptchaAndPhoneState.captcha.set()
 
 
-async def on_startup():
+async def on_startup(dp):
     logging.basicConfig(level=logging.INFO)
     await bot.delete_webhook()
 
 
-# def main() -> None:
-    # parsing_to_selenium(driver)
-    # me = [parsing_to_selenium(driver)]
-    # asyncio.gather(*me)
-
-
 if __name__ == '__main__':
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(parsing_to_selenium(driver))
-    executor.start_polling(dp, on_startup=on_startup, skip_updates=False)
+    if os.path.exists(f'{login}_cookies'):
+        wb_parser()
+    else:
+        executor.start_polling(dp, on_startup=on_startup, skip_updates=False)
