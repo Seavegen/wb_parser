@@ -58,6 +58,6 @@ async def get_sms_code_phone(message: Message, state: FSMContext):
         print(e)
 
     await message.answer('Вы успешно авторизовались!')
-    pickle.dump(driver.get_cookies(), open(f"{login}_cookies", "wb"))
+    pickle.dump(driver.get_cookies(), open(f"cookies/{login}_cookies", "wb"))
     await state.finish()
     wb_parser()

@@ -19,7 +19,7 @@ async def start(message: Message):
     if not os.path.exists('captcha_img'):
         os.mkdir('captcha_img')
 
-    if not os.path.isfile('captcha_img'):
+    if not os.path.exists('captcha_img/captcha_img'):
         auth_to_wb()
 
     await bot.send_photo(
