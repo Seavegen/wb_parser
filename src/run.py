@@ -36,7 +36,7 @@ async def on_startup(dp):
 
 
 if __name__ == '__main__':
-    if os.path.exists(f'{login}_cookies'):
+    if os.path.exists(f'cookies/{login}_cookies'):
         wb_parser()
     else:
         executor.start_polling(dp, on_startup=on_startup, skip_updates=False)

@@ -20,7 +20,7 @@ driver = webdriver.Chrome(os.getcwd() + "/chromedriver", options=option)
 def wb_parser():
     try:
         driver.get('https://www.wildberries.ru')
-        for cookie in pickle.load(open(f"{login}_cookies", "rb")):
+        for cookie in pickle.load(open(f"cookies/{login}_cookies", "rb")):
             driver.add_cookie(cookie)
         delay()
         driver.refresh()
