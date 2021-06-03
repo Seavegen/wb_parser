@@ -1,3 +1,5 @@
+""" Исполняемый файл
+"""
 import asyncio
 import logging
 import os
@@ -5,12 +7,16 @@ from aiogram.utils import executor
 from aiogram.types import Message
 
 from loader import dp, bot
-from src.parser import auth_to_wb
+from src.login_to_wb import auth_to_wb
 from state import CaptchaAndPhoneState
 
 
 @dp.message_handler(commands='start')
 async def start(message: Message):
+
+    if not os.path.exists('captcha_img'):
+        os.mkdir('captcha_img')
+
     if not os.path.isfile('captcha_img'):
         auth_to_wb()
 

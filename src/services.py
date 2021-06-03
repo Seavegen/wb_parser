@@ -1,3 +1,5 @@
+""" Сервисы
+"""
 import random
 import time
 
