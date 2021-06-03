@@ -1,6 +1,6 @@
 """ Исполняемый файл
 """
-import asyncio
+
 import logging
 import os
 from aiogram.utils import executor
@@ -10,8 +10,8 @@ from loader import dp, bot
 from login_to_wb import auth_to_wb
 from state import CaptchaAndPhoneState
 from config import login
-from parser import wb_parser
-
+from parser_wildberris import wb_parser
+from services import delay, get_web_driver_options
 
 @dp.message_handler(commands='start')
 async def start(message: Message):
@@ -27,6 +27,7 @@ async def start(message: Message):
         photo=open('captcha_img/captcha.png', 'rb')
     )
     await message.answer('Введите каптчу:')
+
     await CaptchaAndPhoneState.captcha.set()
 
 
@@ -36,7 +37,8 @@ async def on_startup(dp):
 
 
 if __name__ == '__main__':
+    driver = get_web_driver_options()
     if os.path.exists(f'cookies/{login}_cookies'):
-        wb_parser()
+        wb_parser(driver)
     else:
         executor.start_polling(dp, on_startup=on_startup, skip_updates=False)

@@ -10,7 +10,7 @@ from config import login
 driver = get_web_driver_options()
 
 
-def wb_parser():
+def wb_parser(driver):
     try:
         driver.get('https://www.wildberries.ru')
         for cookie in pickle.load(open(f"cookies/{login}_cookies", "rb")):
@@ -18,14 +18,11 @@ def wb_parser():
         delay()
         driver.refresh()
         delay()
-
-        vendor_code = ''
         with open('data_csv/id.csv', newline='\n') as f:
             reader = csv.reader(f)
             for row in reader:
-                print(row)
-
-        # driver.get(f'https://www.wildberries.ru/catalog/{vendor_code}/detail.aspx')
+                id_link = row[0]
+                driver.get(f'https://www.wildberries.ru/catalog/{id_link}/detail.aspx')
 
     except Exception as error:
         print(error)

@@ -2,6 +2,6 @@
 """
 
 # передается номер без +7
-login: int = 9785737254
+login: int = 9969312817
 # токен бота
-BOT_TOKEN = '1418476569:AAFM3y0nJWyfBVw_B2ySrnQ9I7nXal4g9o8'
+BOT_TOKEN = '1837622390:AAEcmB5BCZZ3Fu0zjPzgq2EUhEX7nhKofew'
