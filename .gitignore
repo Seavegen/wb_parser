@@ -4,8 +4,6 @@ env/
 env
 *.pyc
 .idea
-data.json
-persons_url_list.txt
 __pycache__/
 *.log
 debug.json

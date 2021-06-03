@@ -1,29 +1,20 @@
 """ Авторизация на wildberries. Каптчу и СМС код нужно брать из ТГ-бота
 """
-import os
 import pickle
 import urllib
 from urllib.request import urlretrieve
-
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
 from config import login
-from loader import dp, bot
-from services import delay, user_agent
+from loader import dp
+from services import delay, get_web_driver_options
 from state import CaptchaAndPhoneState
 from parser import wb_parser
 
 
-option = webdriver.ChromeOptions()
-option.add_argument("--disable-blink-features=AutomationControlled")
-option.add_argument('--disable-notifications')
-option.add_argument(f'--user-agent={user_agent()}')
-option.add_argument('--disable-extensions')
-option.add_argument('--disable-dev-shm-usage')
-driver = webdriver.Chrome(os.getcwd() + "/chromedriver", options=option)
+driver = get_web_driver_options()
 
 
 def auth_to_wb():
